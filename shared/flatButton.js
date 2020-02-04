@@ -3,7 +3,7 @@ import { StyleSheet, Text, View,  TouchableOpacity } from 'react-native';
 
 export default function FlatButton({name, onPress}) {
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPress}>
             <View style={styles.flatButton}>
                 <Text style={styles.flatButtonText}>
                     {name}
