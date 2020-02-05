@@ -31,7 +31,7 @@ export default function LogIn({ navigation }) {
                     onSubmit={(values, actions) => {
                         actions.resetForm();
                         setLogin(values);
-                        
+                        //navigation.navigate('App');
                     }}
                 >
                     {(props) => (
@@ -63,6 +63,9 @@ export default function LogIn({ navigation }) {
             <View style={styles.signUp}>
                 <Text style={styles.text}>New User?  </Text>
                 <TextButton name='Signup' onPress={() => navigation.navigate('SignUp')} />
+            </View>
+            <View style={styles.signUp}>
+                <TextButton name='Skip to listings' onPress={() => navigation.navigate('App')} />
             </View>
         </View>
     )

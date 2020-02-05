@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
 import Listings from '../screens/listings';
-import SingleListing from '../screens/login';
+import SingleListing from '../screens/singlelisting';
 
 const screens = {
     Home: {
