@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import ListingCard from '../shared/listingCard';
+import { TextInput } from 'react-native-gesture-handler';
 
 //The About Screen Layout
-export default function Lisings({ navigation }) {
+export default function Listings({ navigation }) {
+
+    const wol = 0;
 
     const [houses, setHouses] = useState([
         { address: '420 Electric Avenue, Lilycove City, 6969', name: '3 Bedroom Villa', price: 'R 4,200,000', img: require('../assets/house.jpg'), key: '1' },
         { address: '69 Nice Street, Littleroot Town, 1111', name: '2 Bedroom Seaside House', price: 'R 6,000,009', img: require('../assets/house2.jpg'), key: '2' },
         { address: '11 Baker Street, Meteor Falls, 2525', name: '1 Bedroom Mansion', price: 'R 25,000,000', img: require('../assets/house.jpg'), key: '3' },
         { address: '11 Kestell Street, Lavaridge Town, 2958', name: '3 Bedroom Cosy Shack', price: 'R 2,000,000', img: require('../assets/house2.jpg'), key: '4' },
-    ])
+    ]);
+
+    const editListing = () => {
+        setHouses((currentHouses) => {
+            console.log(currentHouses);
+        });
+    }
 
     return (
+       
         <View>
             <FlatList
                 data={houses}
@@ -33,6 +43,7 @@ export default function Lisings({ navigation }) {
                 }
             />
         </View >
+      
     )
 }
 

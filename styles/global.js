@@ -23,9 +23,15 @@ export const globalStyles = StyleSheet.create({
     },
     required: {
         color: 'red',
-        marginTop: 0,
-        marginBottom: 10,
         paddingTop: 0,
         borderColor: 'black',
-    }
+    },
+    appContainer: {
+        marginHorizontal: 10
+    },
+    boldHeading:{
+        fontFamily: 'source-bold',
+        fontSize: 22,
+        marginBottom:7
+    },
 });
