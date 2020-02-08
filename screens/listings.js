@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import ListingCard from '../shared/listingCard';
-import { TextInput } from 'react-native-gesture-handler';
+import AddListingButton from '../shared/addListingButton'
+
 
 //The About Screen Layout
 export default function Listings({ navigation }) {
@@ -22,7 +23,6 @@ export default function Listings({ navigation }) {
     }
 
     return (
-       
         <View>
             <FlatList
                 data={houses}
@@ -42,8 +42,9 @@ export default function Listings({ navigation }) {
                 )
                 }
             />
+            <AddListingButton screenName='AddListing' />
         </View >
-      
+
     )
 }
 
@@ -75,6 +76,6 @@ const styles = StyleSheet.create({
         height: 200,
         resizeMode: 'stretch',
         borderRadius: 6
-      
+
     }
 });

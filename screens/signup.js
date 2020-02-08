@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TextInput } from 'react-native';
+import { StyleSheet, View, Text, Image, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { globalStyles } from '../styles/global';
 import FlatButton from '../shared/flatButton';
 import * as Yup from 'yup';
@@ -24,6 +24,7 @@ export default function SignUp({ navigation }) {
     const [signup, setsignup] = useState({ fullName: '',email:'',password:'', confirmPassword:'' });
 
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={globalStyles.authContainer}>
             <View style={styles.imageContainer}>
                 <Image style={styles.pimage} source={require('../assets/p24.png')} />
@@ -83,6 +84,7 @@ export default function SignUp({ navigation }) {
                 </Formik>
             </View>
         </View>
+        </TouchableWithoutFeedback>
     )
 }
 
