@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import ListingCard from '../shared/listingCard';
-import AddListingButton from '../shared/addListingButton'
+import AddListingButton from '../shared/addListingButton';
+import { connect } from 'react-redux';
+import { startGetAllProperties } from '../store/actions/properties'
 
 
 //The About Screen Layout
-export default function Listings({ navigation }) {
+function Listings({ navigation, startGetAllProperties, properties }) {
 
     const wol = 0;
+
+    useEffect(() => {
+        console.log('Inside Listings Component')
+        startGetAllProperties()
+        console.log('from listings', properties)
+    }, [])
 
     const [houses, setHouses] = useState([
         { address: '420 Electric Avenue, Lilycove City, 6969', name: '3 Bedroom Villa', price: 'R 4,200,000', img: require('../assets/house.jpg'), key: '1' },
@@ -25,16 +33,16 @@ export default function Listings({ navigation }) {
     return (
         <View>
             <FlatList
-                data={houses}
+                data={properties}
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => navigation.navigate('Listing', item)}>
                         <ListingCard>
                             <View style={styles.imageWindow}>
-                                <Image style={styles.listingImage} source={item.img} />
+                                <Image style={styles.listingImage} source={{uri:item.image}} />
                             </View>
                             <View style={styles.info}>
                                 <Text style={styles.infoAddress}>{item.address}</Text>
-                                <Text style={styles.infoName}>{item.name}</Text>
+                                <Text style={styles.infoName}>{item.bedrooms}</Text>
                                 <Text style={styles.infoPrice}>{item.price}</Text>
                             </View>
                         </ListingCard>
@@ -47,6 +55,17 @@ export default function Listings({ navigation }) {
 
     )
 }
+import { Form } from 'formik';
+
+const mapStateToProps = (state) => ({
+    properties: state.properties.all
+})
+const mapDispatchToProps = (dispatch) => ({
+    startGetAllProperties: () => dispatch(startGetAllProperties())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Listings)
+
 
 const styles = StyleSheet.create({
     imageWindow: {
