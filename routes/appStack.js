@@ -6,13 +6,22 @@ import AddListing from '../screens/addListing';
 
 const screens = {
     Home: {
-        screen: Listings
+        screen: Listings,
+        navigationOptions: {
+            title: 'View Listings'
+        }
     },
     Listing: {
-        screen: SingleListing
+        screen: SingleListing,
+        navigationOptions: {
+            title: 'Edit Listing'
+        }
     },
     AddListing: {
-        screen: AddListing
+        screen: AddListing,
+        navigationOptions: {
+            title: 'Add Listing'
+        }
     }
 }
 
