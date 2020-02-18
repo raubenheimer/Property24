@@ -1,0 +1,29 @@
+[33mcommit 200455592a6e3f0a7f569ea148d720058bb3f187[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Jacobus Raubenheimer <j.e.raubenheimer@gmail.com>
+Date:   Sat Feb 8 15:23:07 2020 +0200
+
+    Basic UI Completed
+
+[33mcommit 71294b1b68068006745b55239fc4006f51eef9e2[m
+Author: Jacobus Raubenheimer <j.e.raubenheimer@gmail.com>
+Date:   Wed Feb 5 18:01:06 2020 +0200
+
+    Added Edit Listing Form
+
+[33mcommit 22eb4d7b84e70845c18abf9373e9fc45f8dcf4ea[m
+Author: Jacobus Raubenheimer <j.e.raubenheimer@gmail.com>
+Date:   Wed Feb 5 15:26:26 2020 +0200
+
+    Added Listings Basic Functionality
+
+[33mcommit fd765374649f49238714b9173a70e7a0a2cfac6a[m
+Author: Jacobus Raubenheimer <j.e.raubenheimer@gmail.com>
+Date:   Tue Feb 4 17:36:04 2020 +0200
+
+    Added Login and Signup forms
+
+[33mcommit 3ab324d0d5f6335cadb7efe21f9d8c2d2b764628[m
+Author: Jacobus Raubenheimer <j.e.raubenheimer@gmail.com>
+Date:   Tue Feb 4 15:52:43 2020 +0200
+
+    Bare Bones
