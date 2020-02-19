@@ -5,20 +5,17 @@ import TextButton from '../shared/textButton';
 import { globalStyles } from '../styles/global';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import AddListingButton from '../shared/addListingButton'
+import { loginUser } from '../api/api'
 
 const loginSchema = Yup.object({
-    email: Yup.string()
-        .required('Please enter your email')
-        .email('Please enter a valid email'),
+    username: Yup.string()
+        .required('Please enter your username'),
     password: Yup.string()
         .required('Please enter your password')
 })
 
-//The About Screen Layout
-export default function LogIn({ navigation }) {
 
-    const [login, setLogin] = useState({ email: '', password: '' });
+export default function LogIn({ navigation }) {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -28,25 +25,24 @@ export default function LogIn({ navigation }) {
                 </View>
                 <View>
                     <Formik
-                        initialValues={{ email: '', password: '' }}
+                        initialValues={{ username: '', password: '' }}
                         validationSchema={loginSchema}
                         onSubmit={(values, actions) => {
+                            loginUser(values.username, values.password, navigation);
                             actions.resetForm();
-                            setLogin(values);
-                            //navigation.navigate('App');
                         }}
                     >
                         {(props) => (
                             < View >
-                                <Text>Email</Text>
+                                <Text>Username</Text>
                                 < TextInput
                                     style={globalStyles.input}
                                     placeholder='Eg: johndoe@email.com'
                                     placeholderTextColor='#ccc'
-                                    onChangeText={props.handleChange('email')}
-                                    value={props.values.email}
+                                    onChangeText={props.handleChange('username')}
+                                    value={props.values.username}
                                 />
-                                <Text style={globalStyles.required}>{props.touched.email && props.errors.email}</Text>
+                                <Text style={globalStyles.required}>{props.touched.username && props.errors.username}</Text>
 
                                 <Text>Password</Text>
                                 <TextInput
@@ -67,7 +63,7 @@ export default function LogIn({ navigation }) {
                     <TextButton name='Signup' onPress={() => navigation.navigate('SignUp')} />
                 </View>
                 <View style={styles.signUp}>
-                    <TextButton name='Skip to listings' onPress={() => navigation.navigate('App')} />
+                    <TextButton name='Sign in as test' onPress={() => loginUser('test', 'test', navigation)} />
                 </View>
             </View>
         </TouchableWithoutFeedback>
