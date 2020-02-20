@@ -22,7 +22,7 @@ function Listings({ navigation, startGetAllProperties, properties }) {
                     <TouchableOpacity onPress={() => navigation.navigate('Listing', item)}>
                         <ListingCard>
                             <View style={styles.imageWindow}>
-                                <Image style={styles.listingImage} source={{ uri: item.image }} />
+                               <Image style={styles.listingImage} source={{ uri: item.images.length > 0 ? item.images[0] : "" }} />
                             </View>
                             <View style={styles.info}>
                                 <Text style={styles.infoAddress}>{item.number} {item.street}</Text>

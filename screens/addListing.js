@@ -5,6 +5,22 @@ import { Formik } from 'formik';
 import FlatButton from '../shared/flatButton';
 import { globalStyles } from '../styles/global';
 import { newProperty } from '../api/api';
+import { addressSplit } from '../shared/smallFunctions'
+
+const newPropertySchema = Yup.object({
+    images: Yup.string()
+        .required('Please provide property image url'),
+    name: Yup.string()
+        .required('Please enter the property discription'),
+    address: Yup.string()
+        .required('Please enter the property address'),
+    price: Yup.string()
+        .required('Please enter the property price'),
+    beds: Yup.string()
+        .required('Please enter the number of bedrooms'),
+    baths: Yup.string()
+        .required('Please enter the number of bathrooms'),
+})
 
 //The About Screen Layout
 export default function SingleListing({ navigation }) {
@@ -14,25 +30,36 @@ export default function SingleListing({ navigation }) {
             <View >
                 <View style={globalStyles.appContainer}>
                     <Formik
-                        initialValues={{ name: '', streetNumber: '', street: '', price: '', postCode: '', }}
-                        //validationSchema={loginSchema}
+                        initialValues={{ images: '', name: '', address: '', price: '', beds: '', baths: '' }}
+                        validationSchema={newPropertySchema}
                         onSubmit={(values, actions) => {
+                            var [streetNumber, street, city, postCode] = addressSplit(values.address)
                             newProperty(
-                                values.street,
-                                values.streetNumber,
+                                street,
+                                streetNumber,
                                 values.beds,
                                 values.baths,
                                 values.price,
-                                null,
-                                values.postCode,
-                                values.name)
-                            actions.resetForm();                    
+                                [values.images],
+                                postCode,
+                                values.name,
+                                city,
+                                navigation)
+                            //zactions.resetForm();
                         }}
                     >
                         {(props) => (
                             < View>
                                 <Text style={globalStyles.boldHeading}>Property Details</Text>
-                                <Text>Name</Text>
+                                <Text>Image Url</Text>
+                                < TextInput
+                                    style={globalStyles.input}
+                                    onChangeText={props.handleChange('images')}
+                                    value={props.values.images}
+                                />
+                                <Text style={globalStyles.required}>{props.touched.name && props.errors.name}</Text>
+
+                                <Text>Property Discription</Text>
                                 < TextInput
                                     style={globalStyles.input}
                                     onChangeText={props.handleChange('name')}
@@ -40,29 +67,15 @@ export default function SingleListing({ navigation }) {
                                 />
                                 <Text style={globalStyles.required}>{props.touched.name && props.errors.name}</Text>
 
-                                <Text>Street Number</Text>
+                                <Text>Address</Text>
                                 <TextInput
                                     style={globalStyles.input}
-                                    onChangeText={props.handleChange('streetNumber')}
-                                    value={props.values.streetNumber}
+                                    placeholder='Eg: 4, Blue Street, Bloemfontein, 9301'
+                                    placeholderTextColor='#ccc'
+                                    onChangeText={props.handleChange('address')}
+                                    value={props.values.address}
                                 />
-                                <Text style={globalStyles.required}>{props.touched.streetNumber && props.errors.streetNumber}</Text>
-
-                                <Text>Street</Text>
-                                <TextInput
-                                    style={globalStyles.input}
-                                    onChangeText={props.handleChange('street')}
-                                    value={props.values.street}
-                                />
-                                <Text style={globalStyles.required}>{props.touched.street && props.errors.street}</Text>
-
-                                <Text>Postal code</Text>
-                                <TextInput
-                                    style={globalStyles.input}
-                                    onChangeText={props.handleChange('postCode')}
-                                    value={props.values.postCode}
-                                />
-                                <Text style={globalStyles.required}>{props.touched.postCode && props.errors.postCode}</Text>
+                                <Text style={globalStyles.required}>{props.touched.address && props.errors.address}</Text>
 
                                 <Text>Price</Text>
                                 <TextInput

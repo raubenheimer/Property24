@@ -62,7 +62,7 @@ export const deleteProperty = (propertyid) => {
 };
 
 //create new property
-export const newProperty = (street, streetNumber, beds, baths, price, images, postCode, name) => {
+export const newProperty = (street, streetNumber, beds, baths, price, images, postCode, name, city, navigation) => {
     new Property(
         street, //street
         streetNumber, //number
@@ -71,11 +71,16 @@ export const newProperty = (street, streetNumber, beds, baths, price, images, po
         price, //price
         images, //images
         postCode, //postCode
-        name //name
+        name, //name
+        city
     )
         .save()
-        .then(console.log('New'))
-        .catch(console.log('Not New'))
+        .then( (res) =>{
+            console.log(res);
+        navigation.navigate('App')
+        }
+        )
+        .catch (console.log('Not New'))
 }
 
 //update property
