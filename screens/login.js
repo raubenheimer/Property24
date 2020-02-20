@@ -5,7 +5,7 @@ import TextButton from '../shared/textButton';
 import { globalStyles } from '../styles/global';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { loginUser } from '../api/api'
+import { loginUser, getAllProperties } from '../api/api'
 
 const loginSchema = Yup.object({
     username: Yup.string()
@@ -13,7 +13,6 @@ const loginSchema = Yup.object({
     password: Yup.string()
         .required('Please enter your password')
 })
-
 
 export default function LogIn({ navigation }) {
 
@@ -64,6 +63,9 @@ export default function LogIn({ navigation }) {
                 </View>
                 <View style={styles.signUp}>
                     <TextButton name='Sign in as test' onPress={() => loginUser('test', 'test', navigation)} />
+                </View>
+                <View style={styles.signUp}>
+                    <TextButton name='Get all test' onPress={() => getAllProperties()} />
                 </View>
             </View>
         </TouchableWithoutFeedback>

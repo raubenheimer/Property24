@@ -12,6 +12,7 @@ export const loginUser = (username, password, navigation) => {
         .then(response => {
             if (response.message === 'welcome') {
                 navigation.navigate('App');
+                console.log('Signed In')
             }
         })
         .catch(err => {
@@ -30,6 +31,7 @@ export const newUser = (username, password, fullname, email) => {
     )
         .signup()
         .then(user => {
+            console.log('inside then')
             console.log(user)
         })
         .catch(err => {
@@ -39,19 +41,22 @@ export const newUser = (username, password, fullname, email) => {
 
 //fetch all properties
 export const getAllProperties = () => {
-    Property
+    return Property
         .getAll()
         .then(properties => {
+            console.log('inside then')
             console.log(properties)
+            return properties
         })
         .catch(err => {
             console.log(err)
+            return err
         })
 };
 
 //delete property
-export const deleteProperty = () => {
-    Property.delete(property.id)
+export const deleteProperty = (propertyid) => {
+    Property.delete(propertyid)
         .then(console.log('Deleted'))
         .catch(console.log('Not Deleted'))
 };

@@ -1,4 +1,4 @@
-import { getAllProperties } from '../../api/properties'
+import { getAllProperties } from '../../api/api'
 
 export const startGetAllProperties = () => {
     return (dispatch, getState) => {
@@ -8,7 +8,6 @@ export const startGetAllProperties = () => {
                     type: 'GET_ALL_PROPERTIES',
                      all: properties
                 })
-                console.log('the state', getState())
             })
             .catch((error)=> {
                 return error;
