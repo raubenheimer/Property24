@@ -4,6 +4,8 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import FlatButton from '../shared/flatButton';
 import { globalStyles } from '../styles/global';
+import { updateProperty, deleteProperty } from '../api/api';
+import { addressSplit } from '../shared/smallFunctions'
 
 //The About Screen Layout
 export default function SingleListing({ navigation }) {
@@ -14,18 +16,46 @@ export default function SingleListing({ navigation }) {
             <View >
                 <View style={globalStyles.appContainer}>
                     <Formik
-                        initialValues={{ name: navigation.getParam('name'), address: navigation.getParam('address'), price: navigation.getParam('price') }}
+                        initialValues={{
+                            images: navigation.getParam('images')[0],
+                            name: navigation.getParam('name'),
+                            address: navigation.getParam('number') + ', ' + navigation.getParam('street') + ', ' + navigation.getParam('city') + ', ' + navigation.getParam('postCode'),
+                            price: navigation.getParam('price').toString(),
+                            beds: navigation.getParam('beds').toString(),
+                            baths: navigation.getParam('baths').toString()
+                        }}
                         //validationSchema={loginSchema}
                         onSubmit={(values, actions) => {
-                            actions.resetForm();
-                            //editListing();
+                            var [streetNumber, street, city, postCode] = addressSplit(values.address)
+                            updateProperty(
+                                street,
+                                streetNumber,
+                                values.beds,
+                                values.baths,
+                                values.price,
+                                values.images,
+                                postCode,
+                                values.name,
+                                city,
+                                navigation,
+                                navigation.getParam('_id')
+                            )
                             console.log('oi')
+                            //actions.resetForm();
                         }}
                     >
                         {(props) => (
                             < View>
                                 <Text style={globalStyles.boldHeading}>Property Details</Text>
-                                <Text>Name</Text>
+                                <Text>Image Url</Text>
+                                < TextInput
+                                    style={globalStyles.input}
+                                    onChangeText={props.handleChange('images')}
+                                    value={props.values.images}
+                                />
+                                <Text style={globalStyles.required}>{props.touched.name && props.errors.name}</Text>
+
+                                <Text>Property Discription</Text>
                                 < TextInput
                                     style={globalStyles.input}
                                     onChangeText={props.handleChange('name')}
@@ -49,9 +79,32 @@ export default function SingleListing({ navigation }) {
                                 />
                                 <Text style={globalStyles.required}>{props.touched.price && props.errors.price}</Text>
 
+                                <Text>Number of Bedrooms</Text>
+                                <TextInput
+                                    style={globalStyles.input}
+                                    onChangeText={props.handleChange('beds')}
+                                    value={props.values.beds}
+                                />
+                                <Text style={globalStyles.required}>{props.touched.beds && props.errors.beds}</Text>
+
+                                <Text>Number of Bathrooms</Text>
+                                <TextInput
+                                    style={globalStyles.input}
+                                    onChangeText={props.handleChange('baths')}
+                                    value={props.values.baths}
+                                />
+                                <Text style={globalStyles.required}>{props.touched.baths && props.errors.baths}</Text>
+
                                 <View style={styles.twoButtons}>
-                                    <FlatButton name='Cancel' onPress={props.handleSubmit} />
-                                    <FlatButton name='Submit' onPress={props.handleSubmit} />
+                                    <FlatButton name='Cancel' onPress={navigation.navigate('Listings')} color='#406090' />
+                                    <FlatButton name='Submit' onPress={props.handleSubmit} color='#406090' />
+                                </View>
+                                <View style={styles.deleteButton}>
+                                    <FlatButton
+                                        style={{ backGroundColor: 'red' }}
+                                        name='Delete'
+                                        onPress={() => { deleteProperty(navigation.getParam('_id')) }}
+                                        color='red' />
                                 </View>
                             </View>
                         )}
@@ -66,6 +119,11 @@ const styles = StyleSheet.create({
     twoButtons: {
         flexDirection: 'row',
         justifyContent: 'space-evenly'
+    },
+    deleteButton: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 15
     },
 });
 

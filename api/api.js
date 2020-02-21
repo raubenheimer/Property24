@@ -1,6 +1,5 @@
 import { User } from "zaio-property24-api/api/User";
 import { Property } from "zaio-property24-api/api/Property";
-import { Alert } from "react-native";
 
 //login an existing user
 export const loginUser = (username, password, navigation) => {
@@ -10,9 +9,9 @@ export const loginUser = (username, password, navigation) => {
     )
         .login()
         .then(response => {
-            if (response.message === 'welcome') {
+            console.log(response)
+            if (Object.keys(response)[0] === 'id') {
                 navigation.navigate('App');
-                console.log('Signed In')
             }
         })
         .catch(err => {
@@ -55,36 +54,59 @@ export const getAllProperties = () => {
 };
 
 //delete property
-export const deleteProperty = (propertyid) => {
-    Property.delete(propertyid)
-        .then(console.log('Deleted'))
-        .catch(console.log('Not Deleted'))
+export const deleteProperty = (id) => {
+    Property.delete(id)
+    .then((res) => {
+        console.log(res);
+    }
+    )
+    .catch((res) => {
+        console.log(res)
+    })
 };
 
 //create new property
 export const newProperty = (street, streetNumber, beds, baths, price, images, postCode, name, city, navigation) => {
     new Property(
-        street, //street
-        streetNumber, //number
-        beds, //beds
-        baths, //baths
-        price, //price
-        images, //images
-        postCode, //postCode
-        name, //name
+        street,
+        streetNumber,
+        beds,
+        baths,
+        price,
+        images,
+        postCode,
+        name,
         city
     )
         .save()
-        .then( (res) =>{
+        .then((res) => {
             console.log(res);
-        navigation.navigate('App')
+            navigation.navigate('View Listings')
         }
         )
-        .catch (console.log('Not New'))
-}
+        .catch((res) => {
+            console.log(res)
+        })
+};
 
 //update property
-// new Property(street, number, beds, baths, price)
-//     .update(id)
-//     .then(console.log('Updated'))
-//     .catch(console.log('Not Updated'))
+export const updateProperty = (street, streetNumber, beds, baths, price, images, postCode, name, city, navigation, id) => {
+    new Property(
+        street,
+        streetNumber,
+        beds,
+        baths,
+        price,
+        images,
+        postCode,
+        name,
+        city
+    )
+        .update(id)
+        .then((response) => {
+            console.log(response)
+        })
+        .catch((response) => {
+            console.log(response)
+        })
+}

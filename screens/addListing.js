@@ -7,6 +7,7 @@ import { globalStyles } from '../styles/global';
 import { newProperty } from '../api/api';
 import { addressSplit } from '../shared/smallFunctions'
 
+
 const newPropertySchema = Yup.object({
     images: Yup.string()
         .required('Please provide property image url'),
@@ -45,7 +46,7 @@ export default function SingleListing({ navigation }) {
                                 values.name,
                                 city,
                                 navigation)
-                            //zactions.resetForm();
+                            actions.resetForm();
                         }}
                     >
                         {(props) => (

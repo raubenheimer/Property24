@@ -97,7 +97,7 @@ export default function SignUp({ navigation }) {
                                     value={props.values.confirmPassword}
                                 />
                                 <Text style={globalStyles.required}>{props.touched.confirmPassword && props.errors.confirmPassword}</Text>
-                                <FlatButton name='Sign Up' onPress={props.handleSubmit} />
+                                <FlatButton name='Sign Up' onPress={props.handleSubmit} color='#406090'/>
                             </View>
                         )}
                     </Formik>

@@ -5,7 +5,7 @@ import TextButton from '../shared/textButton';
 import { globalStyles } from '../styles/global';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { loginUser, getAllProperties } from '../api/api'
+import { loginUser, getAllProperties, deleteProperty } from '../api/api'
 
 const loginSchema = Yup.object({
     username: Yup.string()
@@ -22,6 +22,7 @@ export default function LogIn({ navigation }) {
                 <View style={styles.imageContainer}>
                     <Image style={styles.pimage} source={require('../assets/p24.png')} />
                 </View>
+
                 <View>
                     <Formik
                         initialValues={{ username: '', password: '' }}
@@ -51,7 +52,7 @@ export default function LogIn({ navigation }) {
                                     value={props.values.password}
                                 />
                                 <Text style={globalStyles.required}>{props.touched.password && props.errors.password}</Text>
-                                <FlatButton name='Login' onPress={props.handleSubmit} />
+                                <FlatButton name='Login' onPress={props.handleSubmit} color='#406090'/>
                             </View>
                         )}
                     </Formik>
@@ -65,7 +66,7 @@ export default function LogIn({ navigation }) {
                     <TextButton name='Sign in as test' onPress={() => loginUser('test', 'test', navigation)} />
                 </View>
                 <View style={styles.signUp}>
-                    <TextButton name='Get all test' onPress={() => getAllProperties()} />
+                    <TextButton name='Delete' onPress={() => deleteProperty('5e4bfa9a04c25200179c91de')} />
                 </View>
             </View>
         </TouchableWithoutFeedback>
