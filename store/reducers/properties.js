@@ -1,5 +1,5 @@
 const defaultPropertiesState = {
-    all: []
+    allProperties: []
 };
 
 export default (state = defaultPropertiesState, action) => {
@@ -7,7 +7,7 @@ export default (state = defaultPropertiesState, action) => {
         case'GET_ALL_PROPERTIES':
             return {
                 ...state,
-                all: action.all
+                allProperties: action.payload
             }
         default:
             return state

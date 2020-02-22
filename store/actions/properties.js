@@ -1,12 +1,12 @@
 import { getAllProperties } from '../../api/api'
 
 export const startGetAllProperties = () => {
-    return (dispatch, getState) => {
+    return function(dispatch) {
         getAllProperties()
             .then((properties) => {
                 dispatch({
                     type: 'GET_ALL_PROPERTIES',
-                     all: properties
+                     payload: properties
                 })
             })
             .catch((error)=> {

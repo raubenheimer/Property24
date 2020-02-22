@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, TouchableWithoutFeedback, Image, TextInput, Keyboard } from 'react-native';
 import FlatButton from '../shared/flatButton';
 import TextButton from '../shared/textButton';
 import { globalStyles } from '../styles/global';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { loginUser, getAllProperties, deleteProperty } from '../api/api'
+import { startGetUser } from '../store/actions/startGetUser'
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../api/api';
+import { connect } from 'react-redux';
 
 const loginSchema = Yup.object({
     username: Yup.string()
@@ -14,7 +17,9 @@ const loginSchema = Yup.object({
         .required('Please enter your password')
 })
 
-export default function LogIn({ navigation }) {
+function LogIn({ navigation, startGetUser }) {
+
+    const state = useSelector(state => state)
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -28,7 +33,7 @@ export default function LogIn({ navigation }) {
                         initialValues={{ username: '', password: '' }}
                         validationSchema={loginSchema}
                         onSubmit={(values, actions) => {
-                            loginUser(values.username, values.password, navigation);
+                            startGetUser(values.username, values.password, navigation);
                             actions.resetForm();
                         }}
                     >
@@ -46,6 +51,7 @@ export default function LogIn({ navigation }) {
 
                                 <Text>Password</Text>
                                 <TextInput
+                                    secureTextEntry={true}
                                     style={globalStyles.input}
                                     placeholder=''
                                     onChangeText={props.handleChange('password')}
@@ -63,15 +69,20 @@ export default function LogIn({ navigation }) {
                     <TextButton name='Signup' onPress={() => navigation.navigate('SignUp')} />
                 </View>
                 <View style={styles.signUp}>
-                    <TextButton name='Sign in as test' onPress={() => loginUser('test', 'test', navigation)} />
+                    <TextButton name='Print State' onPress={() => console.log(state)} />
                 </View>
                 <View style={styles.signUp}>
-                    <TextButton name='Delete' onPress={() => deleteProperty('5e4bfa9a04c25200179c91de')} />
+                    <TextButton name='Login test' onPress={() => startGetUser('admin', 'admin')} />
+                </View>
+                <View style={styles.signUp}>
+                    <TextButton name='api' onPress={() => loginUser('admin', 'admin').then(user => {console.log(user)})} />
                 </View>
             </View>
         </TouchableWithoutFeedback>
     )
-}
+};
+
+export default connect(null, { startGetUser })(LogIn)
 
 const styles = StyleSheet.create({
     signUp: {

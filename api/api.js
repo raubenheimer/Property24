@@ -3,21 +3,11 @@ import { Property } from "zaio-property24-api/api/Property";
 
 //login an existing user
 export const loginUser = (username, password, navigation) => {
-    new User(
+    return new User(
         username,
         password
     )
         .login()
-        .then(response => {
-            console.log(response)
-            if (Object.keys(response)[0] === 'id') {
-                navigation.navigate('App');
-            }
-        })
-        .catch(err => {
-            console.log('Inside Catch')
-            console.log(err)
-        })
 };
 
 //create a new user
@@ -43,8 +33,6 @@ export const getAllProperties = () => {
     return Property
         .getAll()
         .then(properties => {
-            console.log('inside then')
-            console.log(properties)
             return properties
         })
         .catch(err => {
@@ -54,15 +42,17 @@ export const getAllProperties = () => {
 };
 
 //delete property
-export const deleteProperty = (id) => {
+export const deleteProperty = (id, startGetAllProperties, navigation) => {
     Property.delete(id)
-    .then((res) => {
-        console.log(res);
-    }
-    )
-    .catch((res) => {
-        console.log(res)
-    })
+        .then((res) => {
+            console.log(res);
+            //startGetAllProperties()
+            navigation.navigate('Home')
+        }
+        )
+        .catch((res) => {
+            alert(res)
+        })
 };
 
 //create new property
@@ -81,16 +71,20 @@ export const newProperty = (street, streetNumber, beds, baths, price, images, po
         .save()
         .then((res) => {
             console.log(res);
-            navigation.navigate('View Listings')
+            actions.resetForm();
+            navigation.navigate('Home')
         }
         )
         .catch((res) => {
             console.log(res)
+            console.log('CATCH')
+            startGetAllProperties()
+            navigation.navigate('Home')
         })
 };
 
 //update property
-export const updateProperty = (street, streetNumber, beds, baths, price, images, postCode, name, city, navigation, id) => {
+export const updateProperty = (street, streetNumber, beds, baths, price, images, postCode, name, city, navigation, id, startGetAllProperties) => {
     new Property(
         street,
         streetNumber,
@@ -105,8 +99,11 @@ export const updateProperty = (street, streetNumber, beds, baths, price, images,
         .update(id)
         .then((response) => {
             console.log(response)
+            startGetAllProperties()
+            navigation.navigate('Home')
         })
         .catch((response) => {
             console.log(response)
+            navigation.navigate('Home')
         })
 }

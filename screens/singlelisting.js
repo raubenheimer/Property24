@@ -5,10 +5,11 @@ import { Formik } from 'formik';
 import FlatButton from '../shared/flatButton';
 import { globalStyles } from '../styles/global';
 import { updateProperty, deleteProperty } from '../api/api';
-import { addressSplit } from '../shared/smallFunctions'
+import { addressSplit } from '../shared/smallFunctions';
+import { connect } from 'react-redux';
 
 //The About Screen Layout
-export default function SingleListing({ navigation }) {
+function SingleListing({ navigation, startGetAllProperties }) {
 
 
     return (
@@ -38,9 +39,9 @@ export default function SingleListing({ navigation }) {
                                 values.name,
                                 city,
                                 navigation,
-                                navigation.getParam('_id')
+                                navigation.getParam('_id'),
+                                startGetAllProperties
                             )
-                            console.log('oi')
                             //actions.resetForm();
                         }}
                     >
@@ -96,14 +97,16 @@ export default function SingleListing({ navigation }) {
                                 <Text style={globalStyles.required}>{props.touched.baths && props.errors.baths}</Text>
 
                                 <View style={styles.twoButtons}>
-                                    <FlatButton name='Cancel' onPress={navigation.navigate('Listings')} color='#406090' />
+                                    <FlatButton name='Cancel' onPress={() => {navigation.navigate('Home')}} color='#406090' />
                                     <FlatButton name='Submit' onPress={props.handleSubmit} color='#406090' />
                                 </View>
                                 <View style={styles.deleteButton}>
                                     <FlatButton
-                                        style={{ backGroundColor: 'red' }}
                                         name='Delete'
-                                        onPress={() => { deleteProperty(navigation.getParam('_id')) }}
+                                        onPress={() => {
+                                            deleteProperty(navigation.getParam('_id') , startGetAllProperties, navigation);
+                                            console.log('hello')
+                                        }}
                                         color='red' />
                                 </View>
                             </View>
@@ -114,6 +117,15 @@ export default function SingleListing({ navigation }) {
         </TouchableWithoutFeedback>
     )
 }
+
+const mapStateToProps = (state) => ({
+    properties: state.properties.all
+})
+const mapDispatchToProps = (dispatch) => ({
+    startGetAllProperties: () => dispatch(startGetAllProperties())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleListing)
 
 const styles = StyleSheet.create({
     twoButtons: {

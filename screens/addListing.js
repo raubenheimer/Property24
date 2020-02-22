@@ -5,7 +5,8 @@ import { Formik } from 'formik';
 import FlatButton from '../shared/flatButton';
 import { globalStyles } from '../styles/global';
 import { newProperty } from '../api/api';
-import { addressSplit } from '../shared/smallFunctions'
+import { addressSplit } from '../shared/smallFunctions';
+import { connect } from 'react-redux';
 
 
 const newPropertySchema = Yup.object({
@@ -24,7 +25,7 @@ const newPropertySchema = Yup.object({
 })
 
 //The About Screen Layout
-export default function SingleListing({ navigation }) {
+function AddListing({ navigation, startGetAllProperties }) {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -45,8 +46,9 @@ export default function SingleListing({ navigation }) {
                                 postCode,
                                 values.name,
                                 city,
-                                navigation)
-                            actions.resetForm();
+                                navigation,
+                                actions,
+                                startGetAllProperties);
                         }}
                     >
                         {(props) => (
@@ -103,8 +105,8 @@ export default function SingleListing({ navigation }) {
                                 <Text style={globalStyles.required}>{props.touched.baths && props.errors.baths}</Text>
 
                                 <View style={styles.twoButtons}>
-                                    <FlatButton name='Cancel' onPress={() => { console.log('cancled submit') }} />
-                                    <FlatButton name='Submit' onPress={props.handleSubmit} />
+                                    <FlatButton name='Cancel' onPress={() => { console.log('cancled submit') }} color='#406090'/>
+                                    <FlatButton name='Submit' onPress={props.handleSubmit} color='#406090'/>
                                 </View>
                             </View>
                         )}
@@ -114,6 +116,15 @@ export default function SingleListing({ navigation }) {
         </TouchableWithoutFeedback>
     )
 }
+
+const mapStateToProps = (state) => ({
+    properties: state.properties.all
+})
+const mapDispatchToProps = (dispatch) => ({
+    startGetAllProperties: () => dispatch(startGetAllProperties())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddListing)
 
 const styles = StyleSheet.create({
     twoButtons: {
