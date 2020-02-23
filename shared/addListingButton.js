@@ -20,14 +20,11 @@ export default function AddListingButton({ screenName }) {
 
 const styles = StyleSheet.create({
     fab: {
-        position: 'absolute',
-        alignItems: 'center',
-        justifyContent: 'center',
-        right: 40,
-        bottom: 85,
+        position: 'relative',
+        right: -310,
+        bottom: 200,
         backgroundColor: '#406090',
-        elevation: 8,
-        color: 'white'
-        
+        transform: [{'translate': [1,1, 1]}],
+        color: 'white' 
     },
 })

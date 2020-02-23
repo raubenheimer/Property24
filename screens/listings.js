@@ -44,8 +44,8 @@ function Listings({ navigation, startGetAllProperties, properties, state }) {
                     }
                     keyExtractor={item => item._id}
                 />
-                <AddListingButton screenName='AddListing' />
             </View >
+            <AddListingButton screenName='AddListing' />
         </View>
 
 
@@ -93,5 +93,5 @@ const styles = StyleSheet.create({
     navBar: {
         height: 35,
         justifyContent: "center"
-    }
+    }, 
 });

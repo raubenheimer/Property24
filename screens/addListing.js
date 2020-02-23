@@ -1,11 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import FlatButton from '../shared/flatButton';
 import { globalStyles } from '../styles/global';
 import { newProperty } from '../api/api';
-import { addressSplit } from '../shared/smallFunctions';
 import { useDispatch } from 'react-redux'
 import { startGetAllProperties } from '../store/actions/properties';
 
@@ -15,8 +14,16 @@ const newPropertySchema = Yup.object({
         .required('Please provide property image url'),
     name: Yup.string()
         .required('Please enter the property discription'),
-    address: Yup.string()
-        .required('Please enter the property address'),
+    streetNumber: Yup.number().integer('Must be an integer number')
+        .min(0, 'Must be greater than 0')
+        .required('Please enter the street number'),
+    street: Yup.string()
+        .required('Please enter the street name'),
+    city: Yup.string()
+        .required('Please enter the city'),
+    postCode: Yup.number().integer('Must be an integer number')
+        .min(0, 'Must be greater than 0')
+        .required('Please enter the post code'),
     price: Yup.number().integer('Must be an integer number')
         .min(0, 'Must be greater than 0')
         .required('Please enter the property price'),
@@ -35,32 +42,28 @@ export default function AddListing({ navigation }) {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View >
+            <ScrollView >
                 <View style={globalStyles.appContainer}>
                     <Formik
-                        initialValues={{ images: '', name: '', address: '', price: '', beds: '', baths: '' }}
+                        initialValues={{ images: '', name: '', streetNumber: '', street: '', city: '', postCode: '', price: '', beds: '', baths: '' }}
                         validationSchema={newPropertySchema}
                         onSubmit={(values, actions) => {
-                            var [streetNumber, street, city, postCode] = addressSplit(values.address)
                             newProperty(
-                                street,
-                                streetNumber,
+                                values.street,
+                                values.streetNumber,
                                 values.beds,
                                 values.baths,
                                 values.price,
                                 [values.images],
-                                postCode,
+                                values.postCode,
                                 values.name,
-                                city,
-                                navigation,
-                                actions,
-                                startGetAllProperties)
+                                values.city,
+                            )
                                 .then((res) => {
                                     dispatch(startGetAllProperties())
                                     actions.resetForm();
                                     navigation.navigate('Home');
                                 })
-                                
                         }}
                     >
                         {(props) => (
@@ -72,7 +75,7 @@ export default function AddListing({ navigation }) {
                                     onChangeText={props.handleChange('images')}
                                     value={props.values.images}
                                 />
-                                <Text style={globalStyles.required}>{props.touched.name && props.errors.name}</Text>
+                                <Text style={globalStyles.required}>{props.touched.images && props.errors.images}</Text>
 
                                 <Text>Property Discription</Text>
                                 < TextInput
@@ -82,15 +85,37 @@ export default function AddListing({ navigation }) {
                                 />
                                 <Text style={globalStyles.required}>{props.touched.name && props.errors.name}</Text>
 
-                                <Text>Address</Text>
+                                <Text>Street Number</Text>
                                 <TextInput
                                     style={globalStyles.input}
-                                    placeholder='Eg: 4, Blue Street, Bloemfontein, 9301'
-                                    placeholderTextColor='#ccc'
-                                    onChangeText={props.handleChange('address')}
-                                    value={props.values.address}
+                                    onChangeText={props.handleChange('streetNumber')}
+                                    value={props.values.streetNumber}
                                 />
-                                <Text style={globalStyles.required}>{props.touched.address && props.errors.address}</Text>
+                                <Text style={globalStyles.required}>{props.touched.streetNumber && props.errors.streetNumber}</Text>
+
+                                <Text>Street Name</Text>
+                                <TextInput
+                                    style={globalStyles.input}
+                                    onChangeText={props.handleChange('street')}
+                                    value={props.values.street}
+                                />
+                                <Text style={globalStyles.required}>{props.touched.street && props.errors.street}</Text>
+
+                                <Text>City</Text>
+                                <TextInput
+                                    style={globalStyles.input}
+                                    onChangeText={props.handleChange('city')}
+                                    value={props.values.city}
+                                />
+                                <Text style={globalStyles.required}>{props.touched.city && props.errors.city}</Text>
+
+                                <Text>Post Code</Text>
+                                <TextInput
+                                    style={globalStyles.input}
+                                    onChangeText={props.handleChange('postCode')}
+                                    value={props.values.postCode}
+                                />
+                                <Text style={globalStyles.required}>{props.touched.postCode && props.errors.postCode}</Text>
 
                                 <Text>Price</Text>
                                 <TextInput
@@ -117,14 +142,14 @@ export default function AddListing({ navigation }) {
                                 <Text style={globalStyles.required}>{props.touched.baths && props.errors.baths}</Text>
 
                                 <View style={styles.twoButtons}>
-                                    <FlatButton name='Cancel' onPress={() => { console.log('cancled submit') }} color='#406090'/>
-                                    <FlatButton name='Submit' onPress={props.handleSubmit} color='#406090'/>
+                                    <FlatButton name='Cancel' onPress={() => { console.log('cancled submit') }} color='#406090' />
+                                    <FlatButton name='Submit' onPress={props.handleSubmit} color='#406090' />
                                 </View>
                             </View>
                         )}
                     </Formik>
                 </View>
-            </View>
+            </ScrollView>
         </TouchableWithoutFeedback>
     )
 }
@@ -132,7 +157,8 @@ export default function AddListing({ navigation }) {
 const styles = StyleSheet.create({
     twoButtons: {
         flexDirection: 'row',
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
+        marginBottom: 30
     },
 });
 

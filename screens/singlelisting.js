@@ -1,30 +1,37 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import FlatButton from '../shared/flatButton';
 import { globalStyles } from '../styles/global';
 import { updateProperty, deleteProperty } from '../api/api';
-import { addressSplit } from '../shared/smallFunctions';
 import { startGetAllProperties } from '../store/actions/properties';
 import { useDispatch } from 'react-redux'
 
 const singleListingSchema = Yup.object({
     images: Yup.string()
-        .required('Please provide property image url'),
-    name: Yup.string()
-        .required('Please enter the property discription'),
-    address: Yup.string()
-        .required('Please enter the property address'),
-    price: Yup.number().integer('Must be an integer number')
-        .min(0, 'Must be greater than 0')
-        .required('Please enter the property price'),
-    beds: Yup.number().integer('Must be an integer number')
-        .min(0, 'Must be greater than 0')
-        .required('Please enter the number of bedrooms'),
-    baths: Yup.number().integer('Must be an integer number')
-        .min(0, 'Must be greater than 0')
-        .required('Please enter the number of bathrooms'),
+    .required('Please provide property image url'),
+name: Yup.string()
+    .required('Please enter the property discription'),
+streetNumber: Yup.number().integer('Must be an integer number')
+    .min(0, 'Must be greater than 0')
+    .required('Please enter the street number'),
+street: Yup.string()
+    .required('Please enter the street name'),
+city: Yup.string()
+    .required('Please enter the city'),
+postCode: Yup.number().integer('Must be an integer number')
+    .min(0, 'Must be greater than 0')
+    .required('Please enter the post code'),
+price: Yup.number().integer('Must be an integer number')
+    .min(0, 'Must be greater than 0')
+    .required('Please enter the property price'),
+beds: Yup.number().integer('Must be an integer number')
+    .min(0, 'Must be greater than 0')
+    .required('Please enter the number of bedrooms'),
+baths: Yup.number().integer('Must be an integer number')
+    .min(0, 'Must be greater than 0')
+    .required('Please enter the number of bathrooms'),
 })
 
 
@@ -35,31 +42,32 @@ export default function SingleListing({ navigation }) {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View >
+            <ScrollView >
                 <View style={globalStyles.appContainer}>
                     <Formik
                         initialValues={{
                             images: navigation.getParam('images')[0],
                             name: navigation.getParam('name'),
-                            address: navigation.getParam('number') + ', ' + navigation.getParam('street') + ', ' + navigation.getParam('city') + ', ' + navigation.getParam('postCode'),
+                            streetNumber: navigation.getParam('number'),
+                            street: navigation.getParam('street'), 
+                            city: navigation.getParam('city'), 
+                            postCode: navigation.getParam('postCode'),
                             price: navigation.getParam('price').toString(),
                             beds: navigation.getParam('beds').toString(),
                             baths: navigation.getParam('baths').toString()
                         }}
                         validationSchema={singleListingSchema}
                         onSubmit={(values, actions) => {
-                            var [streetNumber, street, city, postCode] = addressSplit(values.address)
                             updateProperty(
-                                street,
-                                streetNumber,
+                                value.street,
+                                value.streetNumber,
                                 values.beds,
                                 values.baths,
                                 values.price,
                                 values.images,
-                                postCode,
+                                value.postCode,
                                 values.name,
-                                city,
-                                navigation,
+                                value.city,
                                 navigation.getParam('_id'),
                             )
                                 .then((res) => {
@@ -88,13 +96,37 @@ export default function SingleListing({ navigation }) {
                                 />
                                 <Text style={globalStyles.required}>{props.touched.name && props.errors.name}</Text>
 
-                                <Text>Address</Text>
+                                <Text>Street Number</Text>
                                 <TextInput
                                     style={globalStyles.input}
-                                    onChangeText={props.handleChange('address')}
-                                    value={props.values.address}
+                                    onChangeText={props.handleChange('streetNumber')}
+                                    value={props.values.streetNumber}
                                 />
-                                <Text style={globalStyles.required}>{props.touched.address && props.errors.address}</Text>
+                                <Text style={globalStyles.required}>{props.touched.streetNumber && props.errors.streetNumber}</Text>
+
+                                <Text>Street Name</Text>
+                                <TextInput
+                                    style={globalStyles.input}
+                                    onChangeText={props.handleChange('street')}
+                                    value={props.values.street}
+                                />
+                                <Text style={globalStyles.required}>{props.touched.street && props.errors.street}</Text>
+
+                                <Text>City</Text>
+                                <TextInput
+                                    style={globalStyles.input}
+                                    onChangeText={props.handleChange('city')}
+                                    value={props.values.city}
+                                />
+                                <Text style={globalStyles.required}>{props.touched.city && props.errors.city}</Text>
+
+                                <Text>Post Code</Text>
+                                <TextInput
+                                    style={globalStyles.input}
+                                    onChangeText={props.handleChange('postCode')}
+                                    value={props.values.postCode}
+                                />
+                                <Text style={globalStyles.required}>{props.touched.postCode && props.errors.postCode}</Text>
 
                                 <Text>Price</Text>
                                 <TextInput
@@ -140,7 +172,7 @@ export default function SingleListing({ navigation }) {
                         )}
                     </Formik>
                 </View>
-            </View>
+            </ScrollView>
         </TouchableWithoutFeedback>
     )
 }
@@ -153,7 +185,8 @@ const styles = StyleSheet.create({
     deleteButton: {
         flexDirection: 'row',
         justifyContent: 'center',
-        marginTop: 15
+        marginTop: 15,
+        marginBottom: 30
     },
 });
 
