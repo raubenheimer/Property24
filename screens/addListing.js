@@ -17,11 +17,14 @@ const newPropertySchema = Yup.object({
         .required('Please enter the property discription'),
     address: Yup.string()
         .required('Please enter the property address'),
-    price: Yup.string()
+    price: Yup.number().integer('Must be an integer number')
+        .min(0, 'Must be greater than 0')
         .required('Please enter the property price'),
-    beds: Yup.string()
+    beds: Yup.number().integer('Must be an integer number')
+        .min(0, 'Must be greater than 0')
         .required('Please enter the number of bedrooms'),
-    baths: Yup.string()
+    baths: Yup.number().integer('Must be an integer number')
+        .min(0, 'Must be greater than 0')
         .required('Please enter the number of bathrooms'),
 })
 
@@ -62,7 +65,7 @@ export default function AddListing({ navigation }) {
                     >
                         {(props) => (
                             < View>
-                                <Text style={globalStyles.boldHeading}>Property Details</Text>
+                                <Text style={globalStyles.boldHeading}>Add Property Details</Text>
                                 <Text>Image Url</Text>
                                 < TextInput
                                     style={globalStyles.input}

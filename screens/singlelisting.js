@@ -9,6 +9,24 @@ import { addressSplit } from '../shared/smallFunctions';
 import { startGetAllProperties } from '../store/actions/properties';
 import { useDispatch } from 'react-redux'
 
+const singleListingSchema = Yup.object({
+    images: Yup.string()
+        .required('Please provide property image url'),
+    name: Yup.string()
+        .required('Please enter the property discription'),
+    address: Yup.string()
+        .required('Please enter the property address'),
+    price: Yup.number().integer('Must be an integer number')
+        .min(0, 'Must be greater than 0')
+        .required('Please enter the property price'),
+    beds: Yup.number().integer('Must be an integer number')
+        .min(0, 'Must be greater than 0')
+        .required('Please enter the number of bedrooms'),
+    baths: Yup.number().integer('Must be an integer number')
+        .min(0, 'Must be greater than 0')
+        .required('Please enter the number of bathrooms'),
+})
+
 
 //The About Screen Layout
 export default function SingleListing({ navigation }) {
@@ -28,7 +46,7 @@ export default function SingleListing({ navigation }) {
                             beds: navigation.getParam('beds').toString(),
                             baths: navigation.getParam('baths').toString()
                         }}
-                        //validationSchema={loginSchema}
+                        validationSchema={singleListingSchema}
                         onSubmit={(values, actions) => {
                             var [streetNumber, street, city, postCode] = addressSplit(values.address)
                             updateProperty(
@@ -53,7 +71,7 @@ export default function SingleListing({ navigation }) {
                     >
                         {(props) => (
                             < View>
-                                <Text style={globalStyles.boldHeading}>Property Details</Text>
+                                <Text style={globalStyles.boldHeading}>Edit Property Details</Text>
                                 <Text>Image Url</Text>
                                 < TextInput
                                     style={globalStyles.input}

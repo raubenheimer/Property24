@@ -4,6 +4,7 @@ import Listings from '../screens/listings';
 import SingleListing from '../screens/singlelisting';
 import AddListing from '../screens/addListing';
 import AllListings from '../screens/allListings';
+import ViewListing from '../screens/viewListing'
 
 const screens = {
     Home: {
@@ -30,7 +31,13 @@ const screens = {
             title: 'View All Listings',
             headerLeft: () => null
         }
-    }
+    },
+    ViewListing: {
+        screen: ViewListing,
+        navigationOptions: {
+            title: 'View This Listing'
+        }
+    },
 }
 
 const AppStack = createStackNavigator(screens);
