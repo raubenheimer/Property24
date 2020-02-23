@@ -6,7 +6,8 @@ import FlatButton from '../shared/flatButton';
 import { globalStyles } from '../styles/global';
 import { newProperty } from '../api/api';
 import { addressSplit } from '../shared/smallFunctions';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux'
+import { startGetAllProperties } from '../store/actions/properties';
 
 
 const newPropertySchema = Yup.object({
@@ -25,7 +26,9 @@ const newPropertySchema = Yup.object({
 })
 
 //The About Screen Layout
-function AddListing({ navigation, startGetAllProperties }) {
+export default function AddListing({ navigation }) {
+
+    const dispatch = useDispatch();
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -48,7 +51,13 @@ function AddListing({ navigation, startGetAllProperties }) {
                                 city,
                                 navigation,
                                 actions,
-                                startGetAllProperties);
+                                startGetAllProperties)
+                                .then((res) => {
+                                    dispatch(startGetAllProperties())
+                                    actions.resetForm();
+                                    navigation.navigate('Home');
+                                })
+                                
                         }}
                     >
                         {(props) => (
@@ -116,15 +125,6 @@ function AddListing({ navigation, startGetAllProperties }) {
         </TouchableWithoutFeedback>
     )
 }
-
-const mapStateToProps = (state) => ({
-    properties: state.properties.all
-})
-const mapDispatchToProps = (dispatch) => ({
-    startGetAllProperties: () => dispatch(startGetAllProperties())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddListing)
 
 const styles = StyleSheet.create({
     twoButtons: {

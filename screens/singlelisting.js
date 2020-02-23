@@ -6,11 +6,14 @@ import FlatButton from '../shared/flatButton';
 import { globalStyles } from '../styles/global';
 import { updateProperty, deleteProperty } from '../api/api';
 import { addressSplit } from '../shared/smallFunctions';
-import { connect } from 'react-redux';
+import { startGetAllProperties } from '../store/actions/properties';
+import { useDispatch } from 'react-redux'
+
 
 //The About Screen Layout
-function SingleListing({ navigation, startGetAllProperties }) {
+export default function SingleListing({ navigation }) {
 
+    const dispatch = useDispatch();
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -40,9 +43,12 @@ function SingleListing({ navigation, startGetAllProperties }) {
                                 city,
                                 navigation,
                                 navigation.getParam('_id'),
-                                startGetAllProperties
                             )
-                            //actions.resetForm();
+                                .then((res) => {
+                                    dispatch(startGetAllProperties());
+                                    actions.resetForm();
+                                    navigation.navigate('Home');
+                                })
                         }}
                     >
                         {(props) => (
@@ -97,15 +103,18 @@ function SingleListing({ navigation, startGetAllProperties }) {
                                 <Text style={globalStyles.required}>{props.touched.baths && props.errors.baths}</Text>
 
                                 <View style={styles.twoButtons}>
-                                    <FlatButton name='Cancel' onPress={() => {navigation.navigate('Home')}} color='#406090' />
+                                    <FlatButton name='Cancel' onPress={() => { navigation.navigate('Home') }} color='#406090' />
                                     <FlatButton name='Submit' onPress={props.handleSubmit} color='#406090' />
                                 </View>
                                 <View style={styles.deleteButton}>
                                     <FlatButton
                                         name='Delete'
                                         onPress={() => {
-                                            deleteProperty(navigation.getParam('_id') , startGetAllProperties, navigation);
-                                            console.log('hello')
+                                            deleteProperty(navigation.getParam('_id'))
+                                                .then((res) => {
+                                                    dispatch(startGetAllProperties());
+                                                    navigation.navigate('Home');
+                                                })
                                         }}
                                         color='red' />
                                 </View>
@@ -117,15 +126,6 @@ function SingleListing({ navigation, startGetAllProperties }) {
         </TouchableWithoutFeedback>
     )
 }
-
-const mapStateToProps = (state) => ({
-    properties: state.properties.all
-})
-const mapDispatchToProps = (dispatch) => ({
-    startGetAllProperties: () => dispatch(startGetAllProperties())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SingleListing)
 
 const styles = StyleSheet.create({
     twoButtons: {

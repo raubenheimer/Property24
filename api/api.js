@@ -42,22 +42,24 @@ export const getAllProperties = () => {
 };
 
 //delete property
-export const deleteProperty = (id, startGetAllProperties, navigation) => {
-    Property.delete(id)
-        .then((res) => {
-            console.log(res);
-            //startGetAllProperties()
-            navigation.navigate('Home')
-        }
-        )
-        .catch((res) => {
-            alert(res)
-        })
+export const deleteProperty = (id, navigation) => {
+   return Property.delete(id)
+        // .then((res) => {
+        //     console.log('Delete Then');
+        //     console.log(res);
+        //     navigation.navigate('Home')
+        //     return res
+        // }
+        // )
+        // .catch((res) => {
+        //     console.log('Delete Catch');
+        //     alert(res)
+        // })
 };
 
 //create new property
 export const newProperty = (street, streetNumber, beds, baths, price, images, postCode, name, city, navigation) => {
-    new Property(
+    return new Property(
         street,
         streetNumber,
         beds,
@@ -69,23 +71,22 @@ export const newProperty = (street, streetNumber, beds, baths, price, images, po
         city
     )
         .save()
-        .then((res) => {
-            console.log(res);
-            actions.resetForm();
-            navigation.navigate('Home')
-        }
-        )
-        .catch((res) => {
-            console.log(res)
-            console.log('CATCH')
-            startGetAllProperties()
-            navigation.navigate('Home')
-        })
+        // .then((res) => {
+        //     console.log(res);
+        //     actions.resetForm();
+        //     navigation.navigate('Home')
+        // }
+        // )
+        // .catch((res) => {
+        //     console.log(res)
+        //     console.log('CATCH')
+        //     navigation.navigate('Home')
+        // })
 };
 
 //update property
 export const updateProperty = (street, streetNumber, beds, baths, price, images, postCode, name, city, navigation, id, startGetAllProperties) => {
-    new Property(
+    return new Property(
         street,
         streetNumber,
         beds,
@@ -97,13 +98,14 @@ export const updateProperty = (street, streetNumber, beds, baths, price, images,
         city
     )
         .update(id)
-        .then((response) => {
-            console.log(response)
-            startGetAllProperties()
-            navigation.navigate('Home')
-        })
-        .catch((response) => {
-            console.log(response)
-            navigation.navigate('Home')
-        })
+        // .then((response) => {
+        //     console.log('Update Then')
+        //     console.log(response)
+        //     navigation.navigate('Home')
+        // })
+        // .catch((response) => {
+        //     console.log('Update Catch')
+        //     console.log(response)
+        //     navigation.navigate('Home')
+        // })
 }

@@ -1,15 +1,16 @@
 import { getAllProperties } from '../../api/api'
 
 export const startGetAllProperties = () => {
-    return function(dispatch) {
+    return function (dispatch) {
         getAllProperties()
             .then((properties) => {
+                console.log(properties)
                 dispatch({
                     type: 'GET_ALL_PROPERTIES',
-                     payload: properties
+                    payload: properties
                 })
             })
-            .catch((error)=> {
+            .catch((error) => {
                 return error;
             })
     }

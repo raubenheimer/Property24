@@ -42,13 +42,11 @@ return (
 }
 
 const mapStateToProps = (state) => ({
-    properties: state.properties.all
+    properties: state.properties.allProperties
 })
-const mapDispatchToProps = (dispatch) => ({
-    startGetAllProperties: () => dispatch(startGetAllProperties())
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Listings)
+
+export default connect(mapStateToProps, { startGetAllProperties })(Listings)
 
 
 const styles = StyleSheet.create({
