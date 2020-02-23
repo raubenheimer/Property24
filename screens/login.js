@@ -6,8 +6,7 @@ import { globalStyles } from '../styles/global';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { startGetUser } from '../store/actions/startGetUser'
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../api/api';
+import { useSelector } from 'react-redux';
 import { connect } from 'react-redux';
 
 const loginSchema = Yup.object({
@@ -67,15 +66,6 @@ function LogIn({ navigation, startGetUser }) {
                 <View style={styles.signUp}>
                     <Text style={styles.text}>New User?  </Text>
                     <TextButton name='Signup' onPress={() => navigation.navigate('SignUp')} />
-                </View>
-                <View style={styles.signUp}>
-                    <TextButton name='Print State' onPress={() => console.log(state)} />
-                </View>
-                <View style={styles.signUp}>
-                    <TextButton name='Login test' onPress={() => startGetUser('admin', 'admin')} />
-                </View>
-                <View style={styles.signUp}>
-                    <TextButton name='api' onPress={() => loginUser('admin', 'admin').then(user => {console.log(user)})} />
                 </View>
             </View>
         </TouchableWithoutFeedback>

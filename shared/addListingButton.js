@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         right: 40,
-        bottom: 40,
+        bottom: 85,
         backgroundColor: '#406090',
         elevation: 8,
         color: 'white'

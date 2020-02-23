@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, Image, TextInput, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { globalStyles } from '../styles/global';
 import FlatButton from '../shared/flatButton';
 import * as Yup from 'yup';
@@ -43,8 +43,12 @@ export default function SignUp({ navigation }) {
                         initialValues={{ userName: '', fullName: '', email: '', password: '', confirmPassword: '' }}
                         validationSchema={signupSchema}
                         onSubmit={(values, actions) => {
-                            //actions.resetForm();
-                            newUser(values.userName, values.password, values.fullName, values.email);
+                            newUser(values.userName, values.password, values.fullName, values.email)
+                            .then((res) => {
+                                actions.resetForm();
+                                navigation.navigate('Home')
+                                Alert.alert('Welcome','Please Signin With Your New Credentials')
+                            })
                         }}
                     >
                         {(props) => (

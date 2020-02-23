@@ -4,7 +4,6 @@ export const startGetAllProperties = () => {
     return function (dispatch) {
         getAllProperties()
             .then((properties) => {
-                console.log(properties)
                 dispatch({
                     type: 'GET_ALL_PROPERTIES',
                     payload: properties

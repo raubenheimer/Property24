@@ -7,14 +7,15 @@ import { startGetAllProperties } from '../store/actions/properties';
 import NavBar from '../shared/navBar'
 
 //The About Screen Layout
-function Listings({ navigation, startGetAllProperties, properties, state }) {
+function AllListings({ navigation, startGetAllProperties, properties, state }) {
 
     useEffect(() => {
         startGetAllProperties()
     }, [])
 
+
     return (
-        <View>
+        <View >
             <View style={styles.navBar}>
                 <NavBar
                     button1= 'Edit My Listings'
@@ -25,29 +26,28 @@ function Listings({ navigation, startGetAllProperties, properties, state }) {
                     />
             </View>
             <View>
-                <FlatList
-                    data={properties.filter(i => [state.userInfo.id].includes(i.postedBy))}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => navigation.navigate('Listing', item)}>
-                            <ListingCard>
-                                <View style={styles.imageWindow}>
-                                    <Image style={styles.listingImage} source={{ uri: item.images[0] }} />
-                                </View>
-                                <View style={styles.info}>
-                                    <Text style={styles.infoAddress}>{item.number} {item.street}, {item.city}, {item.postCode}</Text>
-                                    <Text style={styles.infoName}>{item.name}</Text>
-                                    <Text style={styles.infoPrice}>R {item.price}</Text>
-                                </View>
-                            </ListingCard>
-                        </TouchableOpacity>
-                    )
-                    }
-                    keyExtractor={item => item._id}
-                />
-                <AddListingButton screenName='AddListing' />
-            </View >
-        </View>
-
+            <FlatList
+                data={properties}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => navigation.navigate('Listing', item)}>
+                        <ListingCard>
+                            <View style={styles.imageWindow}>
+                                <Image style={styles.listingImage} source={{ uri: item.images[0] }} />
+                            </View>
+                            <View style={styles.info}>
+                                <Text style={styles.infoAddress}>{item.number} {item.street}, {item.city}, {item.postCode}</Text>
+                                <Text style={styles.infoName}>{item.name}</Text>
+                                <Text style={styles.infoPrice}>R {item.price}</Text>
+                            </View>
+                        </ListingCard>
+                    </TouchableOpacity>
+                )
+                }
+                keyExtractor={item => item._id}
+            />
+            </View>
+            <AddListingButton screenName='AddListing' />
+        </View >
 
     )
 }
@@ -58,7 +58,7 @@ const mapStateToProps = (state) => ({
 })
 
 
-export default connect(mapStateToProps, { startGetAllProperties })(Listings)
+export default connect(mapStateToProps, { startGetAllProperties })(AllListings)
 
 
 const styles = StyleSheet.create({
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
         height: 200,
         resizeMode: 'stretch',
         borderRadius: 6
+
     },
     navBar: {
         height: 35,

@@ -12,20 +12,20 @@ export const loginUser = (username, password, navigation) => {
 
 //create a new user
 export const newUser = (username, password, fullname, email) => {
-    new User(
+    return new User(
         username,
         password,
         fullname,
         email
     )
         .signup()
-        .then(user => {
-            console.log('inside then')
-            console.log(user)
-        })
-        .catch(err => {
-            console.log(err)
-        })
+        // .then(user => {
+        //     console.log('inside then')
+        //     console.log(user)
+        // })
+        // .catch(err => {
+        //     console.log(err)
+        // })
 };
 
 //fetch all properties
